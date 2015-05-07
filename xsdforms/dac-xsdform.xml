@@ -1,0 +1,109 @@
+<xs:schema targetNamespace="http://rdm.ru.nl/demo"
+           xmlns="http://rdm.ru.nl/demo" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:dc="http://purl.org/dc/elements/1.1/"
+           xmlns:i="http://moten.david.org/xsd-forms">
+    <xs:annotation i:numberItems="true">
+        <xs:appinfo>
+            <i:header><![CDATA[
+<h2>Data Acquisition Collection</h2>
+]]></i:header>
+            <i:footer><![CDATA[
+    <p>This form can be very stupid!!</p>
+]]></i:footer>
+            <i:extraImports><![CDATA[
+    <!-- more imports here -->
+]]></i:extraImports>
+            <i:extraScript><![CDATA[
+  // extra script would go here
+processXml = function (xml) {
+  alert(xml);
+}
+]]></i:extraScript>
+            <i:extraCss><![CDATA[
+  /* extra css would go here */
+]]></i:extraCss>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <!-- session for basic information -->
+    <xs:element name="basic" type="basic"/>
+
+    <xs:complexType name="basic">
+        <xs:sequence>
+
+            <xs:element name="dc:title" type="textfield">
+                <xs:annotation i:label="Title" i:validation="Attribute is mandatory."/>
+            </xs:element>
+
+            <xs:element name="dc:identifier" type="textfield">
+                <xs:annotation i:label="Identifier"/>
+            </xs:element>
+
+            <xs:element name="sensitive-data" type="xs:boolean">
+                <xs:annotation i:label="Containing sensitive data"/>
+            </xs:element>
+
+            <xs:element name="author" type="person-name" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:legend="Author"/>
+            </xs:element>
+
+            <xs:element name="acquisition-start-time" type="xs:dateTime" default="1970-01-01T00:00:00">
+                <xs:annotation i:label="Data acquisition start time"/>
+            </xs:element>
+
+            <xs:element name="acquisition-stop-time" type="xs:dateTime" default="1970-01-01T00:00:00">
+                <xs:annotation i:label="Data acquisition finish time"/>
+            </xs:element>
+
+            <xs:element name="datatype" type="datatype">
+                <xs:annotation i:label="Type of data"/>
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- type definition -->
+    <xs:complexType name="person-name">
+        <xs:sequence>
+            <xs:element name="firstname" type="name">
+                <xs:annotation i:label="First name" i:validation="Attribute is mandatory."/>
+            </xs:element>
+            <xs:element name="lastname" type="name">
+                <xs:annotation i:label="Last name" i:validation="Attribute is mandatory."/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="datatype">
+        <xs:sequence>
+            <xs:element name="MRI" type="xs:boolean">
+                <xs:annotation i:label="Magnetic resonance imaging (MRI)"/>
+            </xs:element>
+            <xs:element name="MEG" type="xs:boolean">
+                <xs:annotation i:label="Magnetoencephalography (MEG)"/>
+            </xs:element>
+            <xs:element name="EEG" type="xs:boolean">
+                <xs:annotation i:label="Electroencephalography (EEG)"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="name">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z][a-zA-Z]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="identifier">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9\-.]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="textfield">
+        <xs:restriction base="xs:string">
+            <xs:pattern value=".+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
