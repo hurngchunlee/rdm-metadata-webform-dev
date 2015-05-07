@@ -15,9 +15,6 @@
 ]]></i:extraImports>
             <i:extraScript><![CDATA[
   // extra script would go here
-processXml = function (xml) {
-  alert(xml);
-}
 ]]></i:extraScript>
             <i:extraCss><![CDATA[
   /* extra css would go here */
