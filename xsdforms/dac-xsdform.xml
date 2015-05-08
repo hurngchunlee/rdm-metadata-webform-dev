@@ -36,10 +36,27 @@
                 <xs:annotation i:label="Identifier"/>
             </xs:element>
 
-            <xs:element name="sensitive-data" type="xs:boolean">
-                <xs:annotation i:label="Containing sensitive data"/>
+            <xs:element name="dccn-project-identifier" type="xs:string" default="">
+                <xs:annotation i:label="DCCN project identifier"/>
             </xs:element>
 
+            <xs:element name="dcc-project-identifier" type="xs:string" default="">
+                <xs:annotation i:label="DCC project identifier"/>
+            </xs:element>
+
+            <xs:element name="dcn-project-identifier" type="xs:string" default="">
+                <xs:annotation i:label="DCN project identifier"/>
+            </xs:element>
+
+            <xs:element name="contain-human-subject-data" type="xs:boolean">
+                <xs:annotation i:label="Containing data acquired from human subjects"/>
+            </xs:element>
+
+            <xs:element name="comments" type="xs:string">
+                <xs:annotation i:text="textarea" i:label="Comments" i:css="height:12em;width:24em"/>
+            </xs:element>
+
+            <!--
             <xs:element name="author" type="author" minOccurs="1" maxOccurs="unbounded">
                 <xs:annotation i:legend="Author"/>
             </xs:element>
@@ -47,13 +64,10 @@
             <xs:element name="contact" type="contact" minOccurs="1" maxOccurs="unbounded">
                 <xs:annotation i:legend="Contact"/>
             </xs:element>
+            -->
 
             <xs:element name="acquisition" type="acquisition" minOccurs="1" maxOccurs="unbounded">
                 <xs:annotation i:legend="Data acquisition"/>
-            </xs:element>
-
-            <xs:element name="dc:description" type="xs:string">
-                <xs:annotation i:text="textarea" i:label="Description" i:css="height:12em;width:24em"/>
             </xs:element>
 
         </xs:sequence>
@@ -68,7 +82,7 @@
             <xs:element name="lastname" type="name">
                 <xs:annotation i:label="Last name" i:validation="Attribute is mandatory."/>
             </xs:element>
-            <xs:element name="affiliation" type="affiliation">
+            <xs:element name="affiliations" type="affiliations" minOccurs="1" maxOccurs="unbounded">
                 <xs:annotation i:label="Affiliation"/>
             </xs:element>
         </xs:sequence>
@@ -88,19 +102,19 @@
                 <xs:annotation i:label="Email" i:validation="Attribute is mandatory."/>
             </xs:element>
 
-            <xs:element name="affiliation" type="affiliation">
+            <xs:element name="affiliations" type="affiliations" minOccurs="1" maxOccurs="unbounded">
                 <xs:annotation i:label="Affiliation"/>
             </xs:element>
 
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="affiliation">
+    <xs:complexType name="affiliations">
         <xs:sequence>
             <xs:element name="institution" type="affiliation-opts">
                 <xs:annotation i:label="Institution" i:makeVisible="other->1"/>
             </xs:element>
-            <xs:element name="name-of-institute" type="string-mandatory">
+            <xs:element name="other-institution" type="string-mandatory">
                 <xs:annotation i:visible="false" i:label="Name of institute"
                                i:validation="Institute name should contains at-least 2 characters."/>
             </xs:element>
