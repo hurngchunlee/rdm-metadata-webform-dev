@@ -1,0 +1,391 @@
+<xs:schema targetNamespace="http://rdm.ru.nl/rdm/collections/1.1/"
+           xmlns="http://rdm.ru.nl/rdm/collections/1.1/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:dc="http://purl.org/dc/elements/1.1/"
+           xmlns:i="http://moten.david.org/xsd-forms">
+    <xs:annotation i:numberItems="true">
+        <xs:appinfo>
+            <i:header><![CDATA[
+<h2>Scientific Integrity Collection</h2>
+]]></i:header>
+            <i:footer><![CDATA[
+    <p>This form can be very stupid!!</p>
+]]></i:footer>
+            <i:extraImports><![CDATA[
+    <!-- more imports here -->
+]]></i:extraImports>
+            <i:extraScript><![CDATA[
+  // extra script would go here
+]]></i:extraScript>
+            <i:extraCss><![CDATA[
+  /* extra css would go here */
+]]></i:extraCss>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <!-- session for basic information -->
+    <xs:element name="sic" type="sic"/>
+
+    <xs:complexType name="sic">
+        <xs:sequence>
+
+            <xs:element name="dc:title" type="textfield">
+                <xs:annotation i:label="Title" i:validation="Attribute is mandatory."/>
+            </xs:element>
+
+            <xs:element name="dc:identifier" type="textfield">
+                <xs:annotation i:label="Identifier"/>
+            </xs:element>
+
+            <xs:element name="dccn-project-identifier" type="xs:string" default="">
+                <xs:annotation i:label="DCCN project identifier"/>
+            </xs:element>
+
+            <xs:element name="dcc-project-identifier" type="xs:string" default="">
+                <xs:annotation i:label="DCC project identifier"/>
+            </xs:element>
+
+            <xs:element name="dcn-project-identifier" type="xs:string" default="">
+                <xs:annotation i:label="DCN project identifier"/>
+            </xs:element>
+
+            <xs:element name="contain-human-subject-data" type="xs:boolean">
+                <xs:annotation i:label="Containing data acquired from human subjects"/>
+            </xs:element>
+
+            <xs:element name="CMO-approval-number" type="xs:string">
+                <xs:annotation i:label="CMO approval number"/>
+            </xs:element>
+
+            <xs:element name="comments" type="xs:string">
+                <xs:annotation i:text="textarea" i:label="Comments" i:css="height:12em;width:24em"/>
+            </xs:element>
+
+            <xs:element name="contact" type="contact">
+                <xs:annotation i:legend="Contact"/>
+            </xs:element>
+
+            <xs:element name="publication" type="publication">
+                <xs:annotation i:legend="Journal publication"/>
+            </xs:element>
+
+            <!--
+            <xs:element name="acquisition" type="acquisition" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:legend="Data acquisition"/>
+            </xs:element>
+            -->
+            <xs:element name="data-process" type="data-process">
+                <xs:annotation i:legend="Data process"/>
+            </xs:element>
+
+            <xs:element name="keywords" type="sic-keywords">
+                <xs:annotation i:legend="Keywords"/>
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- type definition for journal publication -->
+    <xs:complexType name="publication">
+        <xs:sequence>
+            <xs:element name="title" type="string-mandatory">
+                <xs:annotation i:label="Publication title" i:validation="Attribute is mandatory"/>
+            </xs:element>
+            <xs:element name="author" type="author" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:legend="Author"/>
+            </xs:element>
+            <xs:element name="journal" type="string-mandatory">
+                <xs:annotation i:label="Name of journal" i:validation="Attribute is mandatory"/>
+            </xs:element>
+            <xs:element name="journal-reference" type="string-mandatory">
+                <xs:annotation i:label="Journal reference"/>
+            </xs:element>
+            <xs:element name="date-submit" type="xs:date" default="1970-01-01">
+                <xs:annotation i:label="Date of submission"/>
+            </xs:element>
+            <xs:element name="status">
+                <xs:annotation i:label="Status" i:makeVisible="published->1"/>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="in preparation"/>
+                        <xs:enumeration value="submitted"/>
+                        <xs:enumeration value="under review"/>
+                        <xs:enumeration value="rejected"/>
+                        <xs:enumeration value="accepted"/>
+                        <xs:enumeration value="published"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="date-publish" type="xs:date" default="1970-01-01">
+                <xs:annotation i:visible="false" i:label="Date of publication"/>
+            </xs:element>
+            <xs:element name="abstract" type="xs:string">
+                <xs:annotation i:text="textarea" i:label="Abstract" i:css="height:12em;width:24em"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- type definition for author and contact person -->
+    <xs:complexType name="author">
+        <xs:sequence>
+            <xs:element name="firstname" type="name">
+                <xs:annotation i:label="First name" i:validation="Attribute is mandatory."/>
+            </xs:element>
+            <xs:element name="lastname" type="name">
+                <xs:annotation i:label="Last name" i:validation="Attribute is mandatory."/>
+            </xs:element>
+            <xs:element name="affiliations" type="affiliations" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:label="Affiliation"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="contact">
+        <xs:sequence>
+            <xs:element name="firstname" type="name">
+                <xs:annotation i:label="First name" i:validation="Attribute is mandatory."/>
+            </xs:element>
+
+            <xs:element name="lastname" type="name">
+                <xs:annotation i:label="Last name" i:validation="Attribute is mandatory."/>
+            </xs:element>
+
+            <xs:element name="email" type="email">
+                <xs:annotation i:label="Email" i:validation="Attribute is mandatory."/>
+            </xs:element>
+
+            <xs:element name="affiliations" type="affiliations" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:label="Affiliation"/>
+            </xs:element>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="affiliations">
+        <xs:sequence>
+            <xs:element name="institution" type="affiliation-opts">
+                <xs:annotation i:label="Institution" i:makeVisible="other->1"/>
+            </xs:element>
+            <xs:element name="other-institution" type="string-mandatory">
+                <xs:annotation i:visible="false" i:label="Name of institute"
+                               i:validation="Institute name should contains at-least 2 characters."/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="affiliation-opts">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DCCN"/>
+            <xs:enumeration value="DCC"/>
+            <xs:enumeration value="DCN"/>
+            <xs:enumeration value="other"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- type definition for data process -->
+    <xs:complexType name="data-process">
+        <xs:sequence>
+            <xs:element name="software" type="software-info" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:legend="Software"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="software-info">
+        <xs:sequence>
+            <xs:element name="name">
+                 <xs:annotation i:label="Name" i:makeVisible="other->1"/>
+                    <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="Matlab"/>
+                        <xs:enumeration value="R"/>
+                        <xs:enumeration value="Octave"/>
+                        <xs:enumeration value="SAS"/>
+                        <xs:enumeration value="other"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="other-name" type="string-mandatory">
+                <xs:annotation i:visible="false" i:label="Name of software"/>
+            </xs:element>
+            <xs:element name="version" type="xs:string">
+                <xs:annotation i:label="Version"/>
+            </xs:element>
+            <xs:element name="comments" type="xs:string">
+                <xs:annotation i:text="textarea" i:label="Comments" i:css="height:12em;width:24em"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- type definition for keywords -->
+    <xs:complexType name="sic-keywords">
+        <xs:sequence>
+            <xs:element name="keyword" type="keyword-info" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:legend="Keyword"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="keyword-info">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string">
+                <xs:annotation i:label="Name"/>
+            </xs:element>
+            <xs:element name="vocabulary">
+                <xs:annotation i:label="Vocabulary" i:makeVisible="other->1"/>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="Cognitive Atlas"/>
+                        <xs:enumeration value="MeSH"/>
+                        <xs:enumeration value="NeuroLex"/>
+                        <xs:enumeration value="CogPO"/>
+                        <xs:enumeration value="other"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="other-vocabulary" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:visible="false" i:legend="Other vocabulary"/>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="vocabulary" type="string-mandatory">
+                            <xs:annotation i:label="Vocabulary"/>
+                        </xs:element>
+                        <xs:element name="vocabulary-uri" type="xs:string">
+                            <xs:annotation i:label="Vocabulary URI"/>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- type definition for data acquisition -->
+    <xs:complexType name="acquisition">
+        <xs:sequence>
+            <xs:element name="start-time" type="xs:dateTime" default="1970-01-01T00:00:00">
+                <xs:annotation i:label="Start time"/>
+            </xs:element>
+
+            <xs:element name="stop-time" type="xs:dateTime" default="1970-01-01T00:00:00">
+                <xs:annotation i:label="Finish time"/>
+            </xs:element>
+
+            <xs:element name="type" type="acquisition-type">
+                <xs:annotation i:label="Type"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="acquisition-type">
+        <xs:sequence>
+            <xs:element name="mri" type="acquisition-type-mri" />
+            <xs:element name="meg" type="acquisition-type-meg" />
+            <xs:element name="eeg" type="acquisition-type-eeg" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="acquisition-type-mri">
+        <xs:sequence>
+            <xs:element name="mri" type="xs:boolean">
+                <xs:annotation i:label="Magnetic resonance imaging (MRI)" i:makeVisible="true->1"/>
+            </xs:element>
+            <xs:element name="mri-scanner" type="mri-scanner-info" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:visible="false" i:legend="MRI Scanner Details"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="acquisition-type-meg">
+        <xs:sequence>
+            <xs:element name="meg" type="xs:boolean">
+                <xs:annotation i:label="Magnetoencephalography (MEG)" i:makeVisible="true->1"/>
+            </xs:element>
+            <xs:element name="meg-scanner" type="meg-scanner-info" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:visible="false" i:legend="MEG Scanner Details"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="acquisition-type-eeg">
+        <xs:sequence>
+            <xs:element name="eeg" type="xs:boolean">
+                <xs:annotation i:label="Electroencephalography (EEG)" i:makeVisible="true->1"/>
+            </xs:element>
+            <xs:element name="eeg-scanner" type="eeg-scanner-info" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:visible="false" i:legend="EEG Scanner Details"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="mri-scanner-info">
+        <xs:sequence>
+            <xs:element name="station">
+                <xs:annotation i:label="Station"/>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                        <xs:enumeration value="Avanto"/>
+                        <xs:enumeration value="Skyra"/>
+                        <xs:enumeration value="Prisma"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="meg-scanner-info">
+        <xs:sequence>
+            <xs:element name="station">
+                <xs:annotation i:label="Station"/>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="MEG stations"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="eeg-scanner-info">
+        <xs:sequence>
+            <xs:element name="station">
+                <xs:annotation i:label="Station"/>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="EEG stations"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- simple types for value validation -->
+    <xs:simpleType name="name">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z][a-zA-Z]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="string-mandatory">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="email">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="identifier">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9\-.]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="textfield">
+        <xs:restriction base="xs:string">
+            <xs:pattern value=".+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
