@@ -15,6 +15,28 @@
 ]]></i:extraImports>
             <i:extraScript><![CDATA[
   // extra script would go here
+  processXml = function (xml) {
+  var data = new Object();
+  data.xml = xml;
+  //disable submit button
+  $('#submit').hide();
+  $.ajax({
+  type: 'POST',
+  url: 'http://rdmapptst.uci.ru.nl/cgi-bin/post_dac.py',
+  data: data,
+  success:
+    function (dat,textStatus,jqXHR) {
+      alert(textStatus + '\n'+ 'metadata for DAC posted successfully.');
+      $('#submit').show();
+    },
+  error:
+    function (jqXHR,textStatus,errorThrown) {
+      alert(textStatus + '\n'+ errorThrown);
+     $('#submit').show();
+    },
+  async:false
+});
+}
 ]]></i:extraScript>
             <i:extraCss><![CDATA[
   /* extra css would go here */
