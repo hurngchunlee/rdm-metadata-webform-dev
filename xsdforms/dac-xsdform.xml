@@ -66,69 +66,18 @@
             </xs:element>
             -->
 
-            <xs:element name="acquisition" type="acquisition" minOccurs="1" maxOccurs="unbounded">
-                <xs:annotation i:legend="Data acquisition"/>
+            <xs:element name="acquisitions" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="acquisition" type="acquisition">
+                            <xs:annotation i:legend="Data acquisition"/>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
             </xs:element>
 
         </xs:sequence>
     </xs:complexType>
-
-    <!-- type definition for author and contact person -->
-    <xs:complexType name="author">
-        <xs:sequence>
-            <xs:element name="firstname" type="name">
-                <xs:annotation i:label="First name" i:validation="Attribute is mandatory."/>
-            </xs:element>
-            <xs:element name="lastname" type="name">
-                <xs:annotation i:label="Last name" i:validation="Attribute is mandatory."/>
-            </xs:element>
-            <xs:element name="affiliations" type="affiliations" minOccurs="1" maxOccurs="unbounded">
-                <xs:annotation i:label="Affiliation"/>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="contact">
-        <xs:sequence>
-            <xs:element name="firstname" type="name">
-                <xs:annotation i:label="First name" i:validation="Attribute is mandatory."/>
-            </xs:element>
-
-            <xs:element name="lastname" type="name">
-                <xs:annotation i:label="Last name" i:validation="Attribute is mandatory."/>
-            </xs:element>
-
-            <xs:element name="email" type="email">
-                <xs:annotation i:label="Email" i:validation="Attribute is mandatory."/>
-            </xs:element>
-
-            <xs:element name="affiliations" type="affiliations" minOccurs="1" maxOccurs="unbounded">
-                <xs:annotation i:label="Affiliation"/>
-            </xs:element>
-
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="affiliations">
-        <xs:sequence>
-            <xs:element name="institution" type="affiliation-opts">
-                <xs:annotation i:label="Institution" i:makeVisible="other->1"/>
-            </xs:element>
-            <xs:element name="other-institution" type="string-mandatory">
-                <xs:annotation i:visible="false" i:label="Name of institute"
-                               i:validation="Institute name should contains at-least 2 characters."/>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:simpleType name="affiliation-opts">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="DCCN"/>
-            <xs:enumeration value="DCC"/>
-            <xs:enumeration value="DCN"/>
-            <xs:enumeration value="other"/>
-        </xs:restriction>
-    </xs:simpleType>
 
     <!-- type definition for data acquisition -->
     <xs:complexType name="acquisition">
@@ -141,49 +90,45 @@
                 <xs:annotation i:label="Finish time"/>
             </xs:element>
 
-            <xs:element name="type" type="acquisition-type">
-                <xs:annotation i:label="Type"/>
+            <xs:element name="datatypes" type="datatype" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation i:label="Data type"/>
             </xs:element>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="acquisition-type">
+    <xs:complexType name="datatype">
         <xs:sequence>
-            <xs:element name="mri" type="acquisition-type-mri" />
-            <xs:element name="meg" type="acquisition-type-meg" />
-            <xs:element name="eeg" type="acquisition-type-eeg" />
-        </xs:sequence>
-    </xs:complexType>
+            <xs:element name="datatype">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="scanner">
+                            <xs:annotation i:label="Scanner" i:makeVisible="MRI->1,MEG->3,EEG->5" i:addBlank="true"/>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="MRI">
+                                        <xs:annotation i:label="Magnetic resonance imaging (MRI)"/>
+                                    </xs:enumeration>
+                                    <xs:enumeration value="MEG">
+                                        <xs:annotation i:label="Magnetoencephalography (MEG)"/>
+                                    </xs:enumeration>
+                                    <xs:enumeration value="EEG">
+                                        <xs:annotation i:label="Electroencephalography (EEG)"/>
+                                    </xs:enumeration>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
 
-    <xs:complexType name="acquisition-type-mri">
-        <xs:sequence>
-            <xs:element name="mri" type="xs:boolean">
-                <xs:annotation i:label="Magnetic resonance imaging (MRI)" i:makeVisible="true->1"/>
-            </xs:element>
-            <xs:element name="mri-scanner" type="mri-scanner-info" minOccurs="1" maxOccurs="unbounded">
-                <xs:annotation i:visible="false" i:legend="MRI Scanner Details"/>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="acquisition-type-meg">
-        <xs:sequence>
-            <xs:element name="meg" type="xs:boolean">
-                <xs:annotation i:label="Magnetoencephalography (MEG)" i:makeVisible="true->1"/>
-            </xs:element>
-            <xs:element name="meg-scanner" type="meg-scanner-info" minOccurs="1" maxOccurs="unbounded">
-                <xs:annotation i:visible="false" i:legend="MEG Scanner Details"/>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="acquisition-type-eeg">
-        <xs:sequence>
-            <xs:element name="eeg" type="xs:boolean">
-                <xs:annotation i:label="Electroencephalography (EEG)" i:makeVisible="true->1"/>
-            </xs:element>
-            <xs:element name="eeg-scanner" type="eeg-scanner-info" minOccurs="1" maxOccurs="unbounded">
-                <xs:annotation i:visible="false" i:legend="EEG Scanner Details"/>
+                        <xs:element name="mri-scanner" type="mri-scanner-info" minOccurs="1" maxOccurs="unbounded">
+                            <xs:annotation i:visible="false" i:legend="MRI Scanner Detail"/>
+                        </xs:element>
+                        <xs:element name="meg-scanner" type="meg-scanner-info" minOccurs="1" maxOccurs="unbounded">
+                            <xs:annotation i:visible="false" i:legend="MEG Scanner Detail"/>
+                        </xs:element>
+                        <xs:element name="eeg-scanner" type="eeg-scanner-info" minOccurs="1" maxOccurs="unbounded">
+                            <xs:annotation i:visible="false" i:legend="EEG Scanner Detail"/>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
             </xs:element>
         </xs:sequence>
     </xs:complexType>
@@ -191,9 +136,9 @@
     <xs:complexType name="mri-scanner-info">
         <xs:sequence>
             <xs:element name="station">
-                <xs:annotation i:label="Station"/>
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
+                <xs:annotation i:label="Station" i:addBlank="true"/>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
                         <xs:enumeration value="Avanto"/>
                         <xs:enumeration value="Skyra"/>
                         <xs:enumeration value="Prisma"/>
@@ -206,7 +151,7 @@
     <xs:complexType name="meg-scanner-info">
         <xs:sequence>
             <xs:element name="station">
-                <xs:annotation i:label="Station"/>
+                <xs:annotation i:label="Station" i:addBlank="true"/>
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
                         <xs:enumeration value="MEG stations"/>
@@ -219,7 +164,7 @@
     <xs:complexType name="eeg-scanner-info">
         <xs:sequence>
             <xs:element name="station">
-                <xs:annotation i:label="Station"/>
+                <xs:annotation i:label="Station" i:addBlank="true"/>
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
                         <xs:enumeration value="EEG stations"/>
